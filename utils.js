@@ -1,7 +1,7 @@
 export default {
     async main(request) {
         const imageUrl = request.url;
-        const tool = request.tool
+        const tool = request.tool;
 
         if (!imageUrl || !tool) {
             return new Response(
