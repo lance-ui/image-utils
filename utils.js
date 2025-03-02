@@ -26,9 +26,9 @@ const main = async request => {
 
     if (!apiEndpoints[tool]) {
         return new Response("Invalid tool specified", { status: 400 });
-    } else if (!apiKey.removebg && !apiKey.deepai) {
+    } else if (!apiKey.removebg || !apiKey.deepai || !apiKey.ocr) {
         return new Response(
-            "Environment credentials not set: either REMOVEBG_API_KEY or DEEPAI_API_KEY",
+            "Environment credentials not set: either REMOVEBG_API_KEY or DEEPAI_API_KEY or OCR_API_KEY",
             { status: 500 }
         );
     }
