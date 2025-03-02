@@ -63,7 +63,7 @@ export default {
                     } else {
                         const extracted_text =
                             response.ParsedResults[0].ParsedText;
-                        return { "text": extracted_text };
+                        return { text: extracted_text };
                     }
                 } catch (e) {
                     console.log(e);
@@ -95,13 +95,13 @@ export default {
             }
 
             const finalImageResponse = await fetch(resultUrl);
-           /* return new Response(finalImageResponse.body, {
+            /* return new Response(finalImageResponse.body, {
                 headers: {
                     "Content-Type":
                         finalImageResponse.headers.get("Content-Type")
                 }
             });*/
-            console.log(finalImageResponse)
+            console.log(finalImageResponse);
         } catch (error) {
             return new Response(`Error processing request: ${error.message}`, {
                 status: 500
