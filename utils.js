@@ -1,8 +1,7 @@
 export default {
-    async fetch(request) {
-        const url = new URL(request.url);
-        const imageUrl = url.searchParams.get("url");
-        const tool = url.searchParams.get("tool");
+    async main(request) {
+        const imageUrl = request.url;
+        const tool = request.tool
 
         if (!imageUrl || !tool) {
             return new Response(
