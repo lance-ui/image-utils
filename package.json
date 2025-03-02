@@ -1,0 +1,8 @@
+{
+  "name": "image-utils",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "lance-ui",
+  "license": "MIT",
+  "private": false
+}
