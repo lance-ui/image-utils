@@ -14,7 +14,8 @@ app.get("/images", async (res, rej) => {
         return res.status(400).json({ error: "missing url parameter" });
     else
         try {
-            main({ url, tool });
+            const data = await main({ url, tool });
+            return res.status(200).json(data) || res.status(200).send(data)
         } catch (e) {
             console.log(e)
             return res.status(500).json({ error: "internal server error" });
