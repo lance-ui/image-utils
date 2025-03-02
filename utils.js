@@ -5,7 +5,7 @@ export default {
 
         if (!imageUrl || !tool) {
             return new Response(
-                "Missing required parameters: url or tool[removebg,enhance,upscale,restore,colorize]",
+                "Missing required parameters: url or tool[removebg,enhance,upscale,restore,colorize,ocr]",
                 { status: 400 }
             );
         }
@@ -15,18 +15,23 @@ export default {
             enhance: "https://api.deepai.org/api/torch-srgan",
             upscale: "https://api.deepai.org/api/waifu2x",
             restore: "https://api.deepai.org/api/image-editor",
-            colorize: "https://api.deepai.org/api/colorizer"
+            colorize: "https://api.deepai.org/api/colorizer",
+            ocr: "https://api.ocr.space/parse/image"
         };
 
         const apiKey = {
             removebg: process.env.REMOVEBG_API_KEY || "",
-            deepai: process.env.DEEPAI_API_KEY || ""
+            deepai: process.env.DEEPAI_API_KEY || "",
+            ocr: process.env.OCR_API_KEY || ""
         };
 
         if (!apiEndpoints[tool]) {
             return new Response("Invalid tool specified", { status: 400 });
         } else if (!apiKey.removebg || !apiKey.deepai) {
-            return new Response("env credetionials not set either REMOVEBG_API_KEY or DEEPAI_API_KEY", { status: 500 });
+            return new Response(
+                "env credetionials not set either REMOVEBG_API_KEY or DEEPAI_API_KEY",
+                { status: 500 }
+            );
         }
 
         try {
@@ -34,9 +39,21 @@ export default {
             let headers = {};
             let body = {};
 
-            if (tool === "removebg") {
+            if (tool.toLowerCase() === "removebg") {
                 headers["X-Api-Key"] = apiKey.removebg;
                 body = new URLSearchParams({ image_url: imageUrl });
+            } else if (tool.toLowerCase() === "ocr") {
+                const params = {
+                    url: imageUrl,
+                    apikey: apikey.ocr,
+                    language: "eng"
+                };
+                try{
+                  
+                }catch (e) {
+                  console.log(e)
+                  return new Response("an Error occurred while processing your request")
+                }
             } else {
                 headers["api-key"] = apiKey.deepai;
                 body = new URLSearchParams({ image: imageUrl });
