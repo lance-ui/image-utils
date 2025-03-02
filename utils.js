@@ -97,4 +97,4 @@ const main = async request => {
         });
     }
 };
-export default { main };
+export default main;
