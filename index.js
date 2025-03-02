@@ -16,6 +16,7 @@ app.get("/images", async (res, rej) => {
         try {
             main({ url, tool });
         } catch (e) {
+            console.log(e)
             return res.status(500).json({ error: "internal server error" });
         }
 });
