@@ -63,7 +63,7 @@ export default {
                     } else {
                         const extracted_text =
                             response.ParsedResults[0].ParsedText;
-                        return extracted_text;
+                        return { "text": extracted_text };
                     }
                 } catch (e) {
                     console.log(e);
