@@ -8,7 +8,8 @@ app.use(express.json());
 const port = process.env.PORT || 5000;
 
 app.get("/images", async (res, rej) => {
-    const { url, tool } = req.query;
+    const url = req.query.url;
+    const tool = req.query.tool
     if (!tool) return res.status(400).json({ error: "missing tool parameter" });
     else if (!url)
         return res.status(400).json({ error: "missing url parameter" });
