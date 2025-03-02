@@ -2,7 +2,10 @@ import { main } from './utils.js';
 import express from 'express';
 
 const app = express();
-const port = 5000;
+
+app.use(express.json());
+
+const port = process.env.PORT || 5000;
 
 app.get('/images', async (res, rej) => {
   const { url, tool } = req.query;
