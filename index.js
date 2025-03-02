@@ -1,4 +1,4 @@
-import { main } from "./utils.js";
+import utils from "./utils.js";
 import express from "express";
 
 const app = express();
@@ -14,7 +14,7 @@ app.get("/images", async (res, rej) => {
         return res.status(400).json({ error: "missing url parameter" });
     else
         try {
-            const data = await main({ url, tool });
+            const data = await utils({ url, tool });
             return res.status(200).json(data) || res.status(200).send(data)
         } catch (e) {
             console.log(e)
