@@ -1,12 +1,9 @@
-const main = async request => {
+const main = async (request) => {
     const imageUrl = request.url;
     const tool = request.tool;
 
     if (!imageUrl || !tool) {
-        return new Response(
-            "Missing required parameters: url or tool[removebg,enhance,upscale,restore,colorize,ocr]",
-            { status: 400 }
-        );
+        throw new Error("Missing required parameters: url or tool[removebg,enhance,upscale,restore,colorize,ocr]")
     }
 
     const apiEndpoints = {
@@ -25,12 +22,9 @@ const main = async request => {
     };
 
     if (!apiEndpoints[tool]) {
-        return new Response("Invalid tool specified", { status: 400 });
+        throw new Error("invalid tool specified st tool parameter try [ocr, colorizer,upscale,restore,enhance,removebg]")
     } else if (!apiKey.removebg || !apiKey.deepai || !apiKey.ocr) {
-        return new Response(
-            "Environment credentials not set: either REMOVEBG_API_KEY or DEEPAI_API_KEY or OCR_API_KEY",
-            { status: 500 }
-        );
+        throw new Error("Environment credentials not set: either REMOVEBG_API_KEY or DEEPAI_API_KEY or OCR_API_KEY");
     }
 
     try {
@@ -58,9 +52,7 @@ const main = async request => {
                 const extracted_text = apiResponse.ParsedResults[0].ParsedText;
                 return { text: extracted_text };
             } else {
-                return new Response(`${apiResponse.ErrorMessage}`, {
-                    status: 500
-                });
+                throw new Error(`${apiResponse.ErrorMessage}`)
             }
         } else {
             headers["api-key"] = apiKey.deepai;
@@ -86,15 +78,9 @@ const main = async request => {
         }
 
         const finalImageResponse = await fetch(resultUrl);
-        return new Response(finalImageResponse.body, {
-            headers: {
-                "Content-Type": finalImageResponse.headers.get("Content-Type")
-            }
-        });
+        return finalImageResponse
     } catch (error) {
-        return new Response(`Error processing request: ${error.message}`, {
-            status: 500
-        });
+        throw new Error(error.message)
     }
 };
 export default main;
