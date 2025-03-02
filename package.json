@@ -4,5 +4,8 @@
   "main": "index.js",
   "author": "lance-ui",
   "license": "MIT",
-  "private": false
+  "private": false,
+  "scripts": {
+    "start": "node index.js"
+  }
 }
