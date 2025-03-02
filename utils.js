@@ -43,16 +43,33 @@ export default {
                 headers["X-Api-Key"] = apiKey.removebg;
                 body = new URLSearchParams({ image_url: imageUrl });
             } else if (tool.toLowerCase() === "ocr") {
-                const params = {
+                const param = {
                     url: imageUrl,
                     apikey: apikey.ocr,
                     language: "eng"
                 };
-                try{
-                  
-                }catch (e) {
-                  console.log(e)
-                  return new Response("an Error occurred while processing your request")
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: "GET",
+                        params: param
+                    });
+                    if (!apiResponse.ok) {
+                        throw new Error("Failed to process image");
+                    }
+                    if (response.IsErroredOnProcessing) {
+                        return new Response(`${response.ErrorMessage}`, {
+                            status: 500
+                        });
+                    } else {
+                        const extracted_text =
+                            response.ParsedResults[0].ParsedText;
+                        return extracted_text;
+                    }
+                } catch (e) {
+                    console.log(e);
+                    return new Response(
+                        "an Error occurred while processing your request"
+                    );
                 }
             } else {
                 headers["api-key"] = apiKey.deepai;
@@ -74,16 +91,17 @@ export default {
                 jsonResponse.output_url || jsonResponse.data?.output_url;
 
             if (!resultUrl) {
-                throw new Error("No output received");
+                return throw new Error("No output received");
             }
 
             const finalImageResponse = await fetch(resultUrl);
-            return new Response(finalImageResponse.body, {
+           /* return new Response(finalImageResponse.body, {
                 headers: {
                     "Content-Type":
                         finalImageResponse.headers.get("Content-Type")
                 }
-            });
+            });*/
+            console.log(finalImageResponse)
         } catch (error) {
             return new Response(`Error processing request: ${error.message}`, {
                 status: 500
